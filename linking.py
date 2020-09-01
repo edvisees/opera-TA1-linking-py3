@@ -174,9 +174,9 @@ class EntityLinker(object):
         # find exact match
         for i, candidate in enumerate(candidates):
             # print candidate['name'].lower(), ent_name
-            if candidate['name'].lower().encode('utf-8') == ent_name:
+            if candidate['name'].lower() == ent_name:
                 scores[i] += 1
-            elif ent_name in candidate['name'].lower().encode('utf-8'):
+            elif ent_name in candidate['name'].lower():
                 scores[i] += 0.5
 
         # filter by type
@@ -549,9 +549,9 @@ if __name__ == '__main__':
                     if 'form' not in frame['interp'] or frame['interp']['form'] != 'named':
                         continue
                     if args.img:
-                        text = frame['label'].encode('utf-8')
+                        text = frame['label']
                     else:
-                        text = frame['provenance']['text'].encode('utf-8')
+                        text = frame['provenance']['text']
                     enttype = frame['interp']['type']
                     if type(enttype) == list:
                         enttype = enttype[0]['value']
@@ -609,9 +609,9 @@ if __name__ == '__main__':
                 for null_ent in null_ents:
                     frame = id2entity[null_ent]
                     if args.img:
-                        text = frame['label'].encode('utf-8')
+                        text = frame['label']
                     else:
-                        text = frame['provenance']['text'].encode('utf-8')
+                        text = frame['provenance']['text']
                     enttype = frame['interp']['type']
                     if type(enttype) == list:
                         enttype = enttype[0]['value']
@@ -816,25 +816,25 @@ if __name__ == '__main__':
                 concept = row[2][1:]
                 result = linker.query({'mention': name, 'type': enttype}, '')
                 if result == 'none':
-                    print('{}\t{}\t{}'.format(name.decode('utf-8'), concept.decode('utf-8'), 'none').encode('utf-8'))
+                    print('{}\t{}\t{}'.format(name, concept, 'none'))
                 else:
-                    out = '{}\t{}'.format(name.decode('utf-8'), concept.decode('utf-8'))
+                    out = '{}\t{}'.format(name, concept)
                     for r_id, refkb_entry in enumerate(result):
                         # if r_id == 3:
                         #     break
                         refkbid = refkb_entry['id']
                         refkbname = refkb_entry['CannonicalName']
                         if refkb_entry['info'] == '':
-                            print((out + '\t{}\t{}'.format(refkbid, refkbname)).encode('utf-8'))
+                            print((out + '\t{}\t{}'.format(refkbid, refkbname)))
                         else:
                             if enttype == 'ldcOnt:GPE':
                                 info = refkb_entry['info'].split('\t')
                                 country, feature, link = info
-                                print((out + '\t{}\t{}\t{}\t{}\t{}'.format(refkbid, refkbname, country, feature, link)).encode('utf-8'))
+                                print((out + '\t{}\t{}\t{}\t{}\t{}'.format(refkbid, refkbname, country, feature, link)))
                             elif enttype == 'ldcOnt:PER':
                                 info = refkb_entry['info'].split('\t')
                                 country = info[0]
                                 title = info[1]
                                 org = info[2]
-                                print((out + '\t{}\t{}\t{}\t{}\t{}'.format(refkbid, refkbname, country, title, org)).encode('utf-8'))
+                                print((out + '\t{}\t{}\t{}\t{}\t{}'.format(refkbid, refkbname, country, title, org)))
                     # print out.encode('utf-8')
