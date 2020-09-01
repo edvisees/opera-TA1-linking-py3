@@ -9,6 +9,7 @@ pushd jcc
 python setup.py build
 python setup.py install
 popd
+# before make, vi Makefile to umcomment lines 70-74 and change the python path to conda envs python path
 make
 make install
 source deactivate linking
